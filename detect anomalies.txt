@@ -1,0 +1,51 @@
+SELECT * FROM Transactions WHERE amount>100000 ORDER by transactiondate;
+
+SELECT DISTINCT C.CustomerID, C.Name
+FROM Transactions T1
+JOIN Transactions T2 
+    ON T1.AccountID = T2.AccountID 
+   AND T1.TransactionID <> T2.TransactionID
+   AND ABS(julianday(T1.TransactionDate) - julianday(T2.TransactionDate)) <= 5
+JOIN Accounts A ON T1.AccountID = A.AccountID
+JOIN Customers C ON A.CustomerID = C.CustomerID;
+
+
+SELECT CustomerID, Name
+FROM (
+    SELECT 
+        C.CustomerID,
+        C.Name,
+        T1.TransactionDate,
+        COUNT(DISTINCT T2.TransactionID) AS TransactionsWithin5Days
+    FROM Transactions T1
+    JOIN Transactions T2 
+        ON T1.AccountID = T2.AccountID
+       AND T1.TransactionID <> T2.TransactionID
+       AND ABS(julianday(T1.TransactionDate) - julianday(T2.TransactionDate)) <= 5
+
+    JOIN Accounts A ON T1.AccountID = A.AccountID
+    JOIN Customers C ON A.CustomerID = C.CustomerID
+    GROUP BY C.CustomerID, C.Name, T1.TransactionDate
+) AS Temp
+WHERE TransactionsWithin5Days >= 2;  -- 1 + 2 = at least 3 transactions in 5 days
+
+SELECT CustomerID, Name
+FROM (
+    SELECT 
+        C.CustomerID,
+        C.Name,
+        T1.TransactionDate,
+        COUNT(DISTINCT T2.TransactionID) AS TransactionsWithin5Days
+    FROM Transactions T1
+    JOIN Transactions T2 
+        ON T1.AccountID = T2.AccountID
+       AND T1.TransactionID <> T2.TransactionID
+       AND ABS(julianday(T1.TransactionDate) - julianday(T2.TransactionDate)) <= 5
+
+    JOIN Accounts A ON T1.AccountID = A.AccountID
+    JOIN Customers C ON A.CustomerID = C.CustomerID
+    GROUP BY C.CustomerID, C.Name, T1.TransactionDate
+) AS Temp
+WHERE TransactionsWithin5Days >= 2 GROUP by customerid,name; 
+
+

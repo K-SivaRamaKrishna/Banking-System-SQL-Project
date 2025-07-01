@@ -1,0 +1,24 @@
+SELECT c.name,a.accountid,a.balance from Customers c JOIN accounts a ON c.customerid=a.customerid ORDER by a.balance DESC;
+
+
+SELECT Date(transactiondate) as transactionday,COUNT(*) as totaltransactions,SUM(amount) as totalamount FROM Transactions GROUP by date(transactiondate) order by transactionday DESC;
+
+
+SELECT 
+    DATE(T.TransactionDate) AS TransactionDay,
+    C.Name AS CustomerName,
+    COUNT(*) AS TotalTransactions,
+    SUM(T.Amount) AS TotalAmount
+FROM 
+    Transactions T
+INNER JOIN 
+    Accounts A ON T.AccountID = A.AccountID
+INNER JOIN 
+    Customers C ON A.CustomerID = C.CustomerID
+GROUP BY 
+    DATE(T.TransactionDate), C.Name
+ORDER BY 
+    TransactionDay DESC;
+
+
+

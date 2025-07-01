@@ -1,0 +1,22 @@
+SELECT TransactionType, SUM(Amount) AS Total
+FROM Transactions
+GROUP BY TransactionType;
+
+
+SELECT TransactionType, SUM(Amount) AS Total
+FROM Transactions
+GROUP BY TransactionType,accountid;
+
+SELECT 
+    C.Name AS CustomerName,
+    T.TransactionType,
+    SUM(T.Amount) AS TotalAmount
+FROM 
+    Transactions T
+JOIN 
+    Accounts A ON T.AccountID = A.AccountID
+JOIN 
+    Customers C ON A.CustomerID = C.CustomerID
+GROUP BY 
+    C.Name, T.TransactionType;
+

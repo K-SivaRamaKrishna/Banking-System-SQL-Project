@@ -1,0 +1,31 @@
+CREATE TABLE Customers(customerid int PRIMARY KEY,Name varchar(100),email varchar(100),phone varchar(10),city varchar(50));
+CREATE Table accounts(accountid int PRIMARY KEY,customerid int,accounttype varchar(20),balance decimal(12,2),createdate Date,FOREIGN KEY(customerid) REFERENCES Customers(customerid));
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY,
+    AccountID INT,
+    TransactionType VARCHAR(20), -- Deposit, Withdrawal, Transfer
+    Amount DECIMAL(12,2),
+    TransactionDate DATETIME,
+    FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID)
+);
+
+INSERT INTO Customers (CustomerID, Name, Email, Phone, City) VALUES
+(1, 'Ravi Kumar', 'ravi@example.com', '9876543210', 'Hyderabad'),
+(2, 'Anita Sharma', 'anita@example.com', '9123456789', 'Mumbai'),
+(3, 'John Paul', 'john@example.com', '7890123456', 'Delhi');
+INSERT INTO accounts (AccountID, CustomerID, AccountType, Balance, createdate) VALUES
+(101, 1, 'Savings', 50000.00, '2023-01-01'),
+(102, 2, 'Current', 120000.00, '2023-03-15'),
+(103, 3, 'Savings', 75000.00, '2023-02-20');
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount, TransactionDate) VALUES
+(1001, 101, 'Deposit', 15000.00, '2023-04-10 09:30:00'),
+(1002, 102, 'Withdrawal', 30000.00, '2023-04-12 11:45:00'),
+(1003, 103, 'Deposit', 20000.00, '2023-04-13 15:10:00'),
+(1004, 101, 'Withdrawal', 5000.00, '2023-04-14 10:00:00'),
+(1005, 102, 'Deposit', 45000.00, '2023-04-15 14:30:00');
+
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount, TransactionDate) VALUES 
+(1006,101,'Deposit',100000,'2023-04-11 10:34:45.00'),
+(1007,101,'Deposit',100000,'2023-04-11 10:35:45.00'),
+(1008,101,'Deposit',100000,'2023-04-11 10:39:45.00'),
+(1009,101,'Deposit',100000,'2023-04-11 10:45:45.00');
